@@ -1,0 +1,17 @@
+CREATE TABLE tblMyBatis (
+    seq NUMBER PRIMARY KEY,
+    name VARCHAR2(50) NOT NULL,
+    age NUMBER NOT NULL,
+    gender CHAR(1) NOT NULL,
+    address VARCHAR2(100) NOT NULL
+);
+
+CREATE SEQUENCE myBatisSeq;
+
+SELECT * FROM tblMyBatis;
+
+DROP SEQUENCE myBatisSeq;
+
+DROP TABLE tblMyBatis;
+
+COMMIT;

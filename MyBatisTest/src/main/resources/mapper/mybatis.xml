@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="mybatis">
+	
+	<insert id="add" parameterType="com.test.domain.MyBatisDTO">
+		INSERT INTO tblMyBatis (seq, name, age, gender, address) VALUES (myBatisSeq.NEXTVAL, #{name}, #{age}, #{gender}, #{address})
+	</insert>
+	
+	<update id="m1">
+		UPDATE tblMyBatis SET age = (age + 1)
+	</update>
+	
+	<delete id="m2" parameterType="String">
+		DELETE FROM tblMyBatis WHERE seq = #{seq}
+	</delete>
+	
+	<insert id="m3" parameterType="com.test.domain.MyBatisDTO">
+		INSERT INTO tblMyBatis (seq, name, age, gender, address) VALUES (myBatisSeq.NEXTVAL, #{name}, #{age}, #{gender}, #{address})
+	</insert>
+	
+	<update id="m4" parameterType="java.util.HashMap">
+		UPDATE tblMyBatis SET address = #{address} WHERE seq = #{seq}
+	</update>
+	
+	<select id="m5" resultType="Integer">
+		SELECT COUNT(*) FROM tblMyBatis
+	</select>
+	
+	<select id="m6" parameterType="String" resultType="com.test.domain.MyBatisDTO">
+		SELECT * FROM tblMyBatis WHERE seq = #{seq}
+	</select>
+
+	<select id="m7" resultType="String">
+		SELECT name FROM tblMyBatis
+	</select>
+	
+	<select id="m8" resultType="com.test.domain.MyBatisDTO">
+		SELECT * FROM tblMyBatis
+	</select>
+	
+	<select id="m9" parameterType="String" resultType="Integer">
+		SELECT COUNT(*) FROM ${table}
+	</select>
+	
+	<select id="m10" resultType="Integer">
+		SELECT COUNT(*) FROM tblMyBatis <![CDATA[WHERE age <= 23]]>
+	</select>
+	
+	<select id="m11" parameterType="String" resultType="com.test.domain.MyBatisDTO">
+		SELECT * FROM tblMyBatis WHERE address LIKE '%${word}%'
+	</select>
+	
+	<select id="m12" parameterType="String" resultType="String">
+		SELECT
+			<if test="type == 1">
+				age
+			</if>
+			<if test="type == 2">
+				gender
+			</if>
+		FROM
+			tblMyBatis
+	</select>
+	
+	<select id="m13" parameterType="java.util.HashMap" resultType="com.test.domain.MyBatisDTO">
+		SELECT
+			*
+		FROM
+			tblMyBatis
+		<choose>
+			<when test="column == 'name'">
+				WHERE name = #{word}
+			</when>
+			<when test="column == 'address'">
+				WHERE address LIKE '%${word}%'
+			</when>
+			<otherwise>
+				<![CDATA[WHERE age <= #{word}]]>
+			</otherwise>
+		</choose>
+	</select>
+	
+</mapper>
