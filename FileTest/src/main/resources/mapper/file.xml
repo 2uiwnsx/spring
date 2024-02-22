@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="file">
+	
+	<select id="list" resultType="com.test.model.LocDTO">
+		SELECT l.*, (SELECT COUNT(*) FROM tblPic WHERE locSeq = l.seq) AS picCount FROM tblLoc l ORDER BY seq DESC
+	</select>
+	
+	<insert id="add" parameterType="com.test.model.LocDTO">
+		INSERT INTO tblLoc (seq, subject, content, regdate) VALUES (locSeq.NEXTVAL, #{subject}, #{content}, DEFAULT)
+	</insert>
+	
+	<select id="seq" resultType="Integer">
+		SELECT MAX(seq) FROM tblLoc
+	</select>
+	
+	<insert id="addPic" parameterType="com.test.model.PicDTO">
+		INSERT INTO tblPic (seq, fileName, locSeq) VALUES (picSeq.NEXTVAL, #{fileName}, #{locSeq})
+	</insert>
+	
+	<select id="view" parameterType="String" resultType="com.test.model.LocDTO">
+		SELECT * FROM tblLoc WHERE seq = #{seq}
+	</select>
+	
+	<select id="picList" parameterType="String" resultType="com.test.model.PicDTO">
+		SELECT * FROM tblPic WHERE locSeq = #{seq}
+	</select>
+	
+</mapper>

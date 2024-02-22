@@ -1,0 +1,30 @@
+CREATE TABLE tblLoc (
+    seq NUMBER PRIMARY KEY,
+    subject VARCHAR2(500) NOT NULL,
+    content VARCHAR2(1000) NOT NULL,
+    regdate DATE DEFAULT SYSDATE NOT NULL
+);
+
+CREATE SEQUENCE locSeq;
+
+SELECT * FROM tblLoc;
+
+DROP SEQUENCE locSeq;
+
+DROP TABLE tblLoc;
+
+CREATE TABLE tblPic (
+    seq NUMBER PRIMARY KEY,
+    fileName VARCHAR2(300) NOT NULL,
+    locSeq NUMBER NOT NULL REFERENCES tblLoc(seq)
+);
+
+CREATE SEQUENCE picSeq;
+
+SELECT * FROM tblPic;
+
+DROP SEQUENCE picSeq;
+
+DROP TABLE tblPic;
+
+COMMIT;
