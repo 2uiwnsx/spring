@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd">
+	
+	<bean id="pen" class="com.test.spring.di02.Pen"></bean>
+
+	<bean id="brush" name="b1 b2 b3 myBrush" class="com.test.spring.di02.Brush"></bean>
+
+	<bean id="hong" class="com.test.spring.di02.Hong">
+		<constructor-arg ref="pen"></constructor-arg>
+	</bean>
+	
+	<!-- <bean class="com.test.spring.di02.Park">
+		<constructor-arg>
+			<bean class="com.test.spring.di02.Choi">
+				<property name="brush">
+					<bean class="com.test.spring.di02.Brush"></bean>
+				</property>
+			</bean>
+		</constructor-arg>
+	</bean> -->
+	
+	<bean id="choi" class="com.test.spring.di02.Choi">
+		<property name="brush" ref="brush"></property>
+	</bean>
+	
+	<bean id="park" class="com.test.spring.di02.Park">
+		<constructor-arg ref="choi"></constructor-arg>
+	</bean>
+	
+</beans>

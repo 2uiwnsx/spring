@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.3.xsd">
+	
+	<!-- 핵심 관심사 -->
+	<bean id="memo" class="com.test.spring.aop.MemoImpl"></bean>
+	
+	<!-- 횡단 관심사 -->
+	<bean id="logger" class="com.test.spring.aop.Logger"></bean>
+	
+	<aop:config>
+		<aop:aspect id="loggerAspect" ref="logger">
+			<aop:pointcut id="p1" expression="execution(public void com.test.spring.aop.MemoImpl.add(String))" />
+			
+			<aop:pointcut id="p2" expression="execution(public String com.test.spring.aop.MemoImpl.read(int))" />
+			
+			<aop:pointcut id="p3" expression="execution(public void add(String)) || execution(public String read(int))" />
+			
+			<aop:pointcut id="p4" expression="execution(* com.test.spring.aop.MemoImpl.*(..))" />
+			
+			<!-- <aop:after method="writeLog" pointcut-ref="p1"/> -->
+			
+			<!-- <aop:before method="writeLog" pointcut-ref="p1"/>
+			
+			<aop:before method="writeLog" pointcut-ref="p2"/> -->
+			
+			<!-- <aop:before method="writeLog" pointcut-ref="p3"/> -->
+			
+			<!-- <aop:after method="writeLog" pointcut-ref="p4"/> -->
+			
+			<!-- <aop:around method="measureTime" pointcut-ref="p1"/> -->
+			
+			<!-- <aop:after-returning method="getResult" pointcut-ref="p2" returning="result"/> -->
+			
+			<aop:after-throwing method="getExceptionType" pointcut-ref="p2" throwing="e"/>
+		</aop:aspect>
+	</aop:config>
+
+</beans>
