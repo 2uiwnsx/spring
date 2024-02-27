@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.test.mapper.MemberMapper">
+
+	<insert id="addMember" parameterType="com.test.domain.MemberDTO">
+		INSERT INTO tblMember (id, pswd, name, regdate, enabled) VALUES (#{id}, #{pswd}, #{name}, DEFAULT, DEFAULT)
+	</insert>
+	
+	<insert id="addAuth" parameterType="com.test.domain.AuthDTO">
+		INSERT INTO tblAuth (id, auth) VALUES (#{id}, #{auth})
+	</insert>
+	
+	<resultMap id="authMap" type="com.test.domain.AuthDTO">
+		<result property="id" column="id" />
+		<result property="auth" column="auth" />
+	</resultMap>
+	
+	<resultMap id="memberMap" type="com.test.domain.MemberDTO">
+		<id property="id" column="id" />
+		<result property="pswd" column="pswd" />
+		<result property="name" column="name" />
+		<result property="regdate" column="regdate" />
+		<result property="enabled" column="enabled" />
+		<collection property="authList" resultMap="authMap"></collection>
+	</resultMap>
+	
+	<select id="getUserDetails" parameterType="String" resultMap="memberMap">
+		SELECT
+			m.id,
+			m.pswd,
+			m.name,
+			m.regdate,
+			m.enabled,
+			a.auth
+		FROM tblMember m
+			LEFT OUTER JOIN tblAuth a
+				ON a.id = m.id
+		WHERE
+			m.id = #{username}
+	</select>
+	
+</mapper>
