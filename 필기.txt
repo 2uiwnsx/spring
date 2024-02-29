@@ -1,0 +1,220 @@
+▶ Spring Tool Suite 3 설치
+	
+	▷ https://github.com/spring-attic/toolsuite-distribution/wiki/Spring-Tool-Suite-3
+	▷ https://download.springsource.com/release/STS/3.9.18.RELEASE/dist/e4.19/spring-tool-suite-3.9.18.RELEASE-e4.19.0-win32-x86_64.zip 다운로드 및 압축 해제
+	▷ Eclipse가 사용할 JVM을 지정하기 위해, STS.ini에서 -vm 추가
+		
+		◆ C:\Program Files\Java\jdk-11\bin\javaw.exe
+		
+▶ Spring Framework Documentation 참고
+	
+	▷ https://docs.spring.io/spring-framework/docs/5.0.7.RELEASE/spring-framework-reference/
+	▷ Core ➤ 1.2. Container overview ➤ 1.2.2. Instantiating a container
+	
+▶ highlight.js 다운로드
+	
+	▷ https://highlightjs.org/
+	
+▶ Windows Terminal 설치
+	
+	▷ Microsoft Store에서 Windows Terminal 다운로드
+	▷ 설정 ➤ 시작
+		
+		◆ 기본 프로필: 명령 프롬프트
+		◆ 기본 터미널 응용 프로그램 : Windows 터미널
+		
+▶ Postman 설치
+	
+	▷ https://www.postman.com/
+	
+▶ Amazon Web Service 사용
+	
+	▷ https://aws.amazon.com/ko/console/
+	
+	▷ EC2 인스턴스 시작
+		
+		◆ 서비스 ➤ EC2 ➤ EC2 대시보드 ➤ 인스턴스 시작
+		
+	▷ IAM 사용자 생성
+		
+		◆ 계정 ➤ 결제 정보에 대한 IAM 사용자 및 역할 액세스 ➤ 편집 ➤ IAM 액세스 활성화
+		◆ 서비스 ➤ IAM ➤ 사용자 ➤ 사용자 생성
+		
+▶ MobaXterm 설치 및 프로젝트 배포
+	
+	▷ https://mobaxterm.mobatek.net/download-home-edition.html
+	▷ MobaXterm Home Edition v23.5 (Installer edition) 다운로드 및 압축 해제
+	
+	▷ SSH 세션 생성
+		
+		◆ Remote host : 퍼블릭 IPv4 주소
+		◆ Specify username : ubuntu
+		◆ Use private key : pem 파일 경로
+		
+	▷ 시간대 설정
+		
+		◆ sudo dpkg-reconfigure tzdata 명령어 실행
+			
+			◇ Asia ➤ Seoul 선택
+			
+	▷ sudo apt-get update 명령어 실행
+	
+	▷ JRE 설치
+		
+		◆ 각 명령어 실행
+			
+			◇ sudo apt-get install default-jre
+			◇ java --version
+			
+	▷ JDK 설치
+		
+		◆ 각 명령어 실행
+			
+			◇ sudo apt-get install default-jdk
+			◇ javac --version
+			
+	▷ Apache Tomcat 설치
+		
+		◆ 각 명령어 실행
+			
+			◇ cd ~
+			◇ wget https://dlcdn.apache.org/tomcat/tomcat-9/v9.0.86/bin/apache-tomcat-9.0.86.tar.gz
+			◇ ls
+			◇ tar -xvf apache-tomcat-9.0.86.tar.gz
+			◇ sudo mkdir -p /opt/tomcat
+			◇ sudo mv apache-tomcat-9.0.86 /opt/tomcat
+			
+	▷ Tomcat 서비스 설정
+		
+		◆ 각 명령어 실행
+			
+			◇ sudo vim /etc/systemd/system/tomcat.service
+				
+				⊙ 입력
+					
+					[Unit]
+					Description=Tomcat 9.0.86 servlet container
+					After=network.target
+					
+					[Service]
+					Type=forking
+					
+					User=root
+					Group=root
+					
+					Environment="JAVA_HOME=/usr/lib/jvm/java-11-openjdk-amd64"
+					Environment="JAVA_OPTS=-Djava.security.egd=file:///dev/urandom"
+					
+					Environment="CATALINA_BASE=/opt/tomcat/apache-tomcat-9.0.86"
+					Environment="CATALINA_HOME=/opt/tomcat/apache-tomcat-9.0.86"
+					Environment="CATALINA_PID=/opt/tomcat/apache-tomcat-9.0.86/temp/tomcat.pid"
+					Environment="CATALINA_OPTS=-Xms512M -Xmx1024M -server -XX:+UseParallelGC"
+					
+					ExecStart=/opt/tomcat/apache-tomcat-9.0.86/bin/startup.sh
+					ExecStop=/opt/tomcat/apache-tomcat-9.0.86/bin/shutdown.sh
+					
+					[Install]
+					WantedBy=multi-user.target
+					
+			◇ sudo systemctl daemon-reload
+			◇ sudo systemctl start tomcat
+			◇ sudo systemctl enable tomcat
+			◇ sudo ufw allow 8080/tcp
+			
+	▷ 인바운드 규칙 추가
+		
+		◆ https://aws.amazon.com/ko/console/
+		◆ 서비스 ➤ EC2 ➤ 보안 그룹 ➤ 인바운드 규칙 ➤ 인바운드 규칙 편집 ➤ 포트 범위가 8080 및 1521인 규칙 추가
+		
+	▷ SFTP 세션 생성
+		
+		◆ Remote host : 퍼블릭 IPv4 주소
+		◆ Specify username : ubuntu
+		◆ Use private key : pem 파일 경로
+		
+	▷ Swap 설정
+		
+		◆ 각 명령어 실행
+			
+			◇ cd /
+			◇ sudo mkdir /swap
+			◇ sudo dd if=/dev/zero of=/swap/swapfile bs=1024 count=2097152
+			◇ cd /swap
+			◇ sudo mkswap swapfile
+			◇ sudo swapon swapfile
+			◇ swapon -s, free
+			◇ sudo vi /etc/fstab
+				
+				⊙ 입력
+					
+					/swap/swapfile swap swap defaults 0 0
+					
+			◇ free -m
+			
+	▷ Oracle 설치
+		
+		◆ alien 설치
+			
+			◇ 각 명령어 실행
+				
+				⊙ cd ~
+				⊙ sudo apt-get install alien
+				
+		◆ https://www.oracle.com/database/technologies/xe-prior-release-downloads.html
+		◆ Oracle Database 11gR2 Express Edition for Linux x64 다운로드 및 압축 해제
+		
+		◆ /home/ubuntu/ ➤ oracle-xe-11.2.0-1.0.x86_64.rpm 파일 업로드
+		
+		◆ 각 명령어 실행
+			
+			◇ sudo alien --scripts -d oracle*
+			◇ sudo dpkg -i oracle-xe_11.2.0-2_amd64.deb
+			◇ sudo /etc/init.d/oracle-xe configure
+				
+				◆ Specify the HTTP port that will be used for Oracle Application Express [8080] : 8000
+				◆ This can be done after initial configuration : java1234
+				◆ Confirm the password : java1234
+				◆ Do you want Oracle Database 11g Express Edition to be started on boot (y/n) [y] : y
+				
+			◇ sudo systemctl status oracle-xe
+			◇ /u01/app/oracle/product/11.2.0/xe/bin/oracle_env.sh
+			◇ sudo vi ~/.bashrc
+				
+				⊙ 입력
+					
+					export ORACLE_HOME=/u01/app/oracle/product/11.2.0/xe  
+					export ORACLE_SID=XE  
+					export NLS_LANG=`$ORACLE_HOME/bin/nls_lang.sh`  
+					export ORACLE_BASE=/u01/app/oracle  
+					export LD_LIBRARY_PATH=$ORACLE_HOME/lib:$LD_LIBRARY_PATH  
+					export PATH=$ORACLE_HOME/bin:$PATH
+					
+			◇ source ~/.bashrc
+			◇ sudo systemctl start oracle-xe
+			◇ sudo systemctl status oracle-xe
+			◇ lsnrctl status
+			◇ sqlplus
+				
+				◆ Enter user-name : system
+				◆ Enter password : 비밀번호
+				
+				◆ ALTER USER 계정명 IDENTIFIED BY 비밀번호 ACCOUNT UNLOCK; 쿼리 실행
+				◆ exit 명령어 실행
+				
+			◇ sqlplus
+				
+				◆ Enter user-name : 계정명
+				◆ Enter password : 비밀번호
+				
+				◆ exit 명령어 실행
+				
+	▷ 서비스 상태 확인
+		
+		◆ 각 명령어 실행
+			
+			◇ sudo systemctl status tomcat
+			◇ sudo systemctl status oracle-xe
+			
+	▷ 프로젝트 배포
+		
+		◆ /opt/tomcat/apache-tomcat-9.0.86/webapps/ ➤ war 파일 업로드
